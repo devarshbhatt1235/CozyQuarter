@@ -14,13 +14,19 @@ export async function POST(
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
   }
 
   const { listingId } = params;
 
   if (!listingId || typeof listingId !== "string") {
-    throw new Error("Invalid ID");
+    return NextResponse.json(
+      { error: "Invalid ID" },
+      { status: 400 }
+    );
   }
 
   let favoriteIds = [...(currentUser.favoriteIds || [])];
@@ -46,13 +52,19 @@ export async function DELETE(
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
   }
 
   const { listingId } = params;
 
   if (!listingId || typeof listingId !== "string") {
-    throw new Error("Invalid ID");
+    return NextResponse.json(
+      { error: "Invalid ID" },
+      { status: 400 }
+    );
   }
 
   let favoriteIds = [...(currentUser.favoriteIds || [])];

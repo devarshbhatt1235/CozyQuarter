@@ -34,31 +34,26 @@ const LoginModal = () => {
     },
   });
 
-  const onSubmit = useCallback(async () => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
-    try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        email: loginModal.email,
-        password: loginModal.password,
-      });
+    signIn("credentials", {
+      ...data,
+      redirect: false,
+    }).then((callback) => {
+      setIsLoading(false);
 
-      if (result?.ok) {
-        toast.success('Logged in');
+      if (callback?.ok) {
+        toast.success("Logged in");
         router.refresh();
         loginModal.onClose();
       }
 
-      if (result?.error) {
-        toast.error(result.error);
+      if (callback?.error) {
+        toast.error(callback.error);
       }
-    } catch (error) {
-      toast.error('Something went wrong.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [loginModal, router]);
+    });
+  };
 
   const onToggle = useCallback(() => {
     loginModal.onClose();
@@ -66,27 +61,32 @@ const LoginModal = () => {
   }, [loginModal, registerModal]);
 
   const bodyContent = (
-    <div className="flex flex-col gap-4">
-      <Heading
-        title="Welcome back"
-        subtitle="Login to your account!"
-      />
+    <div className="relative flex flex-col gap-4">
+      {/* Close Button (X) at Top-Right Corner */}
+      <button 
+        className="absolute top-3 right-3 text-gray-600 hover:text-gray-800 transition"
+        onClick={loginModal.onClose}
+      >
+        <IoClose size={24} />
+      </button>
+
+      <Heading title="Welcome back" subtitle="Login to your account" />
       <Input
         id="email"
         label="Email"
         disabled={isLoading}
+        register={register}
+        errors={errors}
         required
-        value={loginModal.email}
-        onChange={(e) => loginModal.setEmail(e.target.value)}
       />
       <Input
         id="password"
         label="Password"
         type="password"
         disabled={isLoading}
+        register={register}
+        errors={errors}
         required
-        value={loginModal.password}
-        onChange={(e) => loginModal.setPassword(e.target.value)}
       />
     </div>
   );
@@ -94,33 +94,29 @@ const LoginModal = () => {
   const footerContent = (
     <div className="flex flex-col gap-4 mt-3">
       <hr />
-      <Button 
-        outline 
+      <Button
+        outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => signIn('google', { callbackUrl: '/' })}
+        onClick={() => signIn("google")}
       />
-      <Button 
-        outline 
+      <Button
+        outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => signIn('github', { callbackUrl: '/' })}
+        onClick={() => signIn("github")}
       />
-      <div className="
-        text-neutral-500 
-        text-center 
-        mt-4 
-        font-light
-      ">
-        <p>First time using CozyQuarter?
-          <span 
-            onClick={onToggle} 
-            className="
-              text-neutral-800 
-              cursor-pointer 
-              hover:underline
-            "
-            > Create an account</span>
+      <div
+        className="text-neutral-500 text-center mt-4 font-light"
+      >
+        <p>
+          First time using CozyQuarter?
+          <span
+            onClick={onToggle}
+            className="text-neutral-800 cursor-pointer hover:underline"
+          >
+            {" "} Create an account
+          </span>
         </p>
       </div>
     </div>
@@ -133,7 +129,7 @@ const LoginModal = () => {
       title="Login"
       actionLabel="Continue"
       onClose={loginModal.onClose}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
     />

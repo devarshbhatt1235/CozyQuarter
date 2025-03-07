@@ -15,6 +15,8 @@ interface ListingsInfoProps {
   guestCount: number;
   roomCount: number;
   bathroomCount: number;
+  kitchenCount: number;
+  acCount: number;
   category: {
     icon: IconType,
     label: string;
@@ -30,6 +32,8 @@ const ListingsInfo: React.FC<ListingsInfoProps> = ({
   roomCount,
   guestCount,
   bathroomCount,
+  kitchenCount,
+  acCount,
   locationValue,
 }) => {
   const { getByValue } = useCountries();
@@ -47,6 +51,8 @@ const ListingsInfo: React.FC<ListingsInfoProps> = ({
           <div>{guestCount} guests</div>
           <div>{roomCount} rooms</div>
           <div>{bathroomCount} bathrooms</div>
+          <div>{kitchenCount} kitchen</div>
+          <div>{acCount} AC</div>
         </div>
       </div>
       <hr />

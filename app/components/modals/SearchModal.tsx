@@ -1,24 +1,21 @@
 'use client';
 
+import qs from 'query-string';
+import dynamic from 'next/dynamic';
 import { useCallback, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Range } from "react-date-range";
-import { formatISO } from "date-fns";
-import qs from "query-string";
-import dynamic from "next/dynamic";
+import { Range } from 'react-date-range';
+import { formatISO } from 'date-fns';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import useSearchModal from "@/app/hooks/useSearchModal";
+
 import Modal from "./Modal";
 import Calendar from "../inputs/Calendar";
 import Counter from "../inputs/Counter";
-import CountrySelect, { 
-  CountrySelectValue
-} from "../inputs/CountrySelect";
+import Counter1 from "../inputs/Counter1";
+import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
 import Heading from '../Heading';
-
-const Map = dynamic(() => import('../Map'), { 
-  ssr: false 
-});
+import { IoClose } from "react-icons/io5"; // Import Close Icon
 
 enum STEPS {
   LOCATION = 0,
@@ -37,11 +34,17 @@ const SearchModal = () => {
   const [guestCount, setGuestCount] = useState(1);
   const [roomCount, setRoomCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
+  const [kitchenCount, setkitchenCount] = useState(1);
+  const [acCount, setacCount] = useState(1);
   const [dateRange, setDateRange] = useState<Range>({
     startDate: new Date(),
     endDate: new Date(),
     key: 'selection'
   });
+
+  const Map = useMemo(() => dynamic(() => import('../Map'), { 
+    ssr: false 
+  }), [location]);
 
   const onBack = useCallback(() => {
     setStep((value) => value - 1);
@@ -68,6 +71,8 @@ const SearchModal = () => {
       guestCount,
       roomCount,
       bathroomCount,
+      kitchenCount,
+      acCount
     };
 
     if (dateRange.startDate) {
@@ -80,7 +85,7 @@ const SearchModal = () => {
 
     const url = qs.stringifyUrl({
       url: '/',
-      query: updatedQuery
+      query: updatedQuery,
     }, { skipNull: true });
 
     setStep(STEPS.LOCATION);
@@ -94,34 +99,28 @@ const SearchModal = () => {
     router, 
     guestCount, 
     roomCount,
+    kitchenCount,
+    acCount,
     dateRange,
     onNext,
     bathroomCount,
     params
   ]);
 
-  const actionLabel = useCallback(() => {
-    if (step === STEPS.LOCATION) {
+  const actionLabel = useMemo(() => {
+    if (step === STEPS.INFO) {
       return 'Search'
     }
 
-    if (step === STEPS.DATE) {
-      return 'Next'
-    }
-
-    return 'Search'
+    return 'Next'
   }, [step]);
 
-  const secondaryActionLabel = useCallback(() => {
+  const secondaryActionLabel = useMemo(() => {
     if (step === STEPS.LOCATION) {
       return undefined
     }
 
-    if (step === STEPS.DATE) {
-      return 'Back'
-    }
-
-    return undefined
+    return 'Back'
   }, [step]);
 
   let bodyContent = (
@@ -177,10 +176,30 @@ const SearchModal = () => {
         />        
         <hr />
         <Counter 
-          onChange={(value) => setBathroomCount(value)}
+          onChange={(value) => {
+            setBathroomCount(value)
+          }}
           value={bathroomCount}
           title="Bathrooms"
           subtitle="How many bathrooms do you need?"
+        />
+        <hr />
+        <Counter1 
+          onChange={(value) => {
+            setkitchenCount(value)
+          }}
+          value={kitchenCount}
+          title="Kitchens"
+          subtitle="How many Kitchens do you need?"
+        />
+        <hr />
+        <Counter1 
+          onChange={(value) => {
+            setacCount(value)
+          }}
+          value={acCount}
+          title="AC"
+          subtitle="How many AC do you need?"
         />
       </div>
     )
@@ -190,12 +209,24 @@ const SearchModal = () => {
     <Modal
       isOpen={searchModal.isOpen}
       title="Filters"
-      actionLabel={actionLabel()}
+      actionLabel={actionLabel}
       onSubmit={onSubmit}
-      secondaryActionLabel={secondaryActionLabel()}
+      secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.LOCATION ? undefined : onBack}
       onClose={searchModal.onClose}
-      body={bodyContent}
+      body={
+        <div className="relative">
+          {/* Close Button (X) at Top-Right Corner */}
+          <button 
+            className="absolute top-3 right-3 text-gray-600 hover:text-gray-800 transition"
+            onClick={searchModal.onClose}
+          >
+            <IoClose size={24} />
+          </button>
+
+          {bodyContent}
+        </div>
+      }
     />
   );
 }

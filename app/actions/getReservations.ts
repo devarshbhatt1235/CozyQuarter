@@ -4,13 +4,15 @@ interface IParams {
   listingId?: string;
   userId?: string;
   authorId?: string;
+  type?: 'current' | 'past';
 }
 
 export default async function getReservations(
   params: IParams
 ) {
   try {
-    const { listingId, userId, authorId } = params;
+    const { listingId, userId, authorId, type } = params;
+    const currentDate = new Date();
 
     const query: any = {};
 
@@ -24,6 +26,17 @@ export default async function getReservations(
 
     if (authorId) {
         query.listing = { userId: authorId };
+    }
+
+    // Add date filtering based on type
+    if (type === 'current') {
+        query.endDate = {
+            gte: currentDate
+        };
+    } else if (type === 'past') {
+        query.endDate = {
+            lt: currentDate
+        };
     }
 
     const reservations = await prisma.reservation.findMany({

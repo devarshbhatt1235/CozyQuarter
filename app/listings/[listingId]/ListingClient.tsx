@@ -15,6 +15,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Range } from "react-date-range";
 import toast from "react-hot-toast";
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 const initialDateRange = {
   startDate: new Date(),
   endDate: new Date(),
@@ -58,20 +64,55 @@ export const ListingClient: React.FC<ListingClientProps> = ({
       return loginModal.onOpen();
     }
     setIsLoading(true);
+
+    // Create Razorpay order
     axios
-      .post("/api/reservations", {
-        totalPrice,
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate,
-        listingId: listing?.id,
+      .post("/api/razorpay", {
+        amount: totalPrice,
       })
-      .then(() => {
-        toast.success("Listing reserved");
-        setDateRange(initialDateRange);
-        router.push("/trips");
+      .then((response) => {
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          amount: response.data.amount,
+          currency: response.data.currency,
+          name: "CozyQuarter",
+          description: "Property Reservation Payment",
+          order_id: response.data.id,
+          handler: function (response: any) {
+            // Handle successful payment
+            axios
+              .post("/api/reservations", {
+                totalPrice,
+                startDate: dateRange.startDate,
+                endDate: dateRange.endDate,
+                listingId: listing?.id,
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id,
+              })
+              .then(() => {
+                toast.success("Listing reserved");
+                setDateRange(initialDateRange);
+                router.push("/trips");
+              })
+              .catch(() => toast.error("Something went wrong"))
+              .finally(() => {
+                setIsLoading(false);
+              });
+          },
+          prefill: {
+            name: currentUser.name || "",
+            email: currentUser.email || "",
+          },
+          theme: {
+            color: "#FF385C",
+          },
+        };
+
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
       })
-      .catch(() => toast.error("Something went wrong"))
-      .finally(() => {
+      .catch((error) => {
+        toast.error("Error creating payment order");
         setIsLoading(false);
       });
   }, [dateRange, totalPrice, listing?.id, router, currentUser, loginModal]);
@@ -112,6 +153,8 @@ export const ListingClient: React.FC<ListingClientProps> = ({
               roomCount={listing.roomCount}
               guestCount={listing.guestCount}
               bathroomCount={listing.bathroomCount}
+              kitchenCount={listing.kitchenCount}
+              acCount={listing.acCount}
               locationValue={listing.locationValue}
             />
             <div className="order-first mb-10 md:order-last md:col-span-3">
