@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import { format } from 'date-fns';
+import { BiBed, BiBath } from "react-icons/bi";
 
 import { 
   SafeListing, 
@@ -49,7 +50,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
     }
 
     onAction?.(actionId)
-  }, [disabled, onAction, actionId]);
+  }, [onAction, actionId, disabled]);
 
   const price = useMemo(() => {
     if (reservation) {
@@ -119,17 +120,42 @@ const ListingCard: React.FC<ListingCardProps> = ({
           ₹ {price}
           </div>
           {!reservation && (
-            <div className="font-light">night</div>
+            <div className="font-light">/ night</div>
           )}
         </div>
         {onAction && actionLabel && (
-          <Button
+          <button
             disabled={disabled}
-            small
-            label={actionLabel} 
             onClick={handleCancel}
-          />
+            className="
+              w-full
+              relative
+              bg-black
+              border-2
+              text-white
+              border-black
+              py-3
+              px-4
+              rounded-lg
+              transition
+              hover:opacity-80
+              disabled:cursor-not-allowed
+              disabled:opacity-70
+            "
+          >
+            {actionLabel}
+          </button>
         )}
+        <div className="flex items-center gap-4 text-neutral-500">
+          <div className="flex items-center gap-1">
+            <BiBed size={20} />
+            <span>{data.roomCount} beds</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <BiBath size={20} />
+            <span>{data.bathroomCount} baths</span>
+          </div>
+        </div>
       </div>
     </div>
    );
