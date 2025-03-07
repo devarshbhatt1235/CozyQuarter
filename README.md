@@ -95,6 +95,20 @@ app/
 
 MIT
 
+## Screenshots
+
+### Home Page
+![Home Page](public/images/home.png)
+
+### Property Details
+![Property Details](public/images/property.png)
+
+### Search Results
+![Search Results](public/images/search.png)
+
+### User Profile
+![User Profile](public/images/profile.png)
+
 ### Desktop (screenshot):
 
 | Home  | Info Propertie | 
