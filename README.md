@@ -1,99 +1,112 @@
-# CozyQuarter - Airbnb Clone
+# CozyQuarter - Your Home Away From Home
 
-A modern Airbnb clone built with Next.js 13, TypeScript, and Prisma.
+A modern, user-friendly platform for finding and booking temporary accommodations. Built with Next.js, TypeScript, and Prisma.
 
 ## Features
 
-- User authentication with NextAuth.js
-- Property listings with image upload
-- Search and filtering functionality
-- Interactive map integration
-- Favorites system
-- Reservation system
-- Responsive design with Tailwind CSS
+- 🔍 Advanced search with filters
+- 🏠 Detailed property listings
+- 📅 Real-time availability calendar
+- 💳 Secure payment processing
+- 👤 User authentication and profiles
+- 📱 Responsive design
+- 🌐 Multi-language support
+- 📧 Email notifications
+- 📊 Admin dashboard
+- 🔒 Secure authentication
 
 ## Tech Stack
 
-- Next.js 13
-- TypeScript
-- Prisma
-- NextAuth.js
-- Tailwind CSS
-- Mapbox
-- Cloudinary
+- **Frontend**: Next.js 14, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes, Prisma
+- **Database**: PostgreSQL
+- **Authentication**: NextAuth.js
+- **Payment**: Stripe
+- **Image Storage**: Cloudinary
+- **Email**: Resend
+- **Deployment**: Vercel
 
 ## Getting Started
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Set up your environment variables
-4. Run the development server: `npm run dev`
+### Prerequisites
 
-## Environment Variables
+- Node.js 18.x or later
+- PostgreSQL
+- npm or yarn
 
-Create a `.env` file with the following variables:
+### Installation
 
-```
-DATABASE_URL=
-NEXTAUTH_SECRET=
-NEXTAUTH_URL=
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-CLOUDINARY_CLOUD_NAME=
-MAPBOX_TOKEN=
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/cozyquarter.git
+   cd cozyquarter
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Set up environment variables:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Edit `.env.local` with your configuration.
+
+4. Set up the database:
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. Run the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
 ```
-app/
-├── actions/         # Server actions
-├── api/            # API routes
-├── components/     # React components
-├── hooks/          # Custom hooks
-├── libs/           # Utility functions
-├── providers/      # Context providers
-└── types/          # TypeScript types
+cozyquarter/
+├── app/                    # Next.js app directory
+│   ├── (auth)/            # Authentication routes
+│   ├── (dashboard)/       # Dashboard routes
+│   ├── (main)/            # Main app routes
+│   ├── api/               # API routes
+│   └── layout.tsx         # Root layout
+├── components/            # React components
+├── lib/                   # Utility functions
+├── prisma/               # Database schema
+├── public/               # Static assets
+└── styles/               # Global styles
 ```
-
-## Features in Detail
-
-### Authentication
-- Email/Password login
-- Google OAuth
-- GitHub OAuth
-- Protected routes
-
-### Property Management
-- Create new listings
-- Upload multiple images
-- Set pricing and availability
-- Manage reservations
-
-### Search and Filtering
-- Location-based search
-- Date range selection
-- Price filtering
-- Amenity filtering
-- Category filtering
-
-### User Features
-- Favorite properties
-- Booking history
-- User profile management
-- Reviews and ratings
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Next.js](https://nextjs.org/)
+- [Prisma](https://www.prisma.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Stripe](https://stripe.com/)
+- [Cloudinary](https://cloudinary.com/)
+- [Resend](https://resend.com/)
 
 ## Screenshots
 
