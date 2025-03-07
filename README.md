@@ -43,6 +43,54 @@ CLOUDINARY_CLOUD_NAME=
 MAPBOX_TOKEN=
 ```
 
+## Project Structure
+
+```
+app/
+├── actions/         # Server actions
+├── api/            # API routes
+├── components/     # React components
+├── hooks/          # Custom hooks
+├── libs/           # Utility functions
+├── providers/      # Context providers
+└── types/          # TypeScript types
+```
+
+## Features in Detail
+
+### Authentication
+- Email/Password login
+- Google OAuth
+- GitHub OAuth
+- Protected routes
+
+### Property Management
+- Create new listings
+- Upload multiple images
+- Set pricing and availability
+- Manage reservations
+
+### Search and Filtering
+- Location-based search
+- Date range selection
+- Price filtering
+- Amenity filtering
+- Category filtering
+
+### User Features
+- Favorite properties
+- Booking history
+- User profile management
+- Reviews and ratings
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
 ## License
 
 MIT
