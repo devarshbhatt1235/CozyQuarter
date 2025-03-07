@@ -1,4 +1,51 @@
-# Full Stack Airbnb Clone with Next.js 13 App Router: React, Tailwind, Prisma, MongoDB, NextAuth 2023
+# CozyQuarter - Airbnb Clone
+
+A modern Airbnb clone built with Next.js 13, TypeScript, and Prisma.
+
+## Features
+
+- User authentication with NextAuth.js
+- Property listings with image upload
+- Search and filtering functionality
+- Interactive map integration
+- Favorites system
+- Reservation system
+- Responsive design with Tailwind CSS
+
+## Tech Stack
+
+- Next.js 13
+- TypeScript
+- Prisma
+- NextAuth.js
+- Tailwind CSS
+- Mapbox
+- Cloudinary
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Set up your environment variables
+4. Run the development server: `npm run dev`
+
+## Environment Variables
+
+Create a `.env` file with the following variables:
+
+```
+DATABASE_URL=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+CLOUDINARY_CLOUD_NAME=
+MAPBOX_TOKEN=
+```
+
+## License
+
+MIT
 
 ### Desktop (screenshot):
 
