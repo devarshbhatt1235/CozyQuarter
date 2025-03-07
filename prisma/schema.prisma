@@ -19,6 +19,7 @@ model User {
   listings       Listing[]
   bookings       Booking[]
   reviews        Review[]
+  favorites      Favorite[]
   accounts       Account[]
   sessions       Session[]
 }
@@ -66,6 +67,7 @@ model Listing {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   bookings    Booking[]
   reviews     Review[]
+  favorites   Favorite[]
 }
 
 model Booking {
@@ -92,4 +94,16 @@ model Review {
   propertyId String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   property   Listing  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String
+  propertyId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property   Listing  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, propertyId])
 }
